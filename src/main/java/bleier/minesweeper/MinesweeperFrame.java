@@ -1,3 +1,5 @@
+package bleier.minesweeper;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,7 +16,7 @@ public class MinesweeperFrame extends JFrame {
         this.game = game;
         this.cells = new JButton[game.getRows()][game.getCols()];
 
-        setTitle("Minesweeper");
+        setTitle("bleier.minesweeper.Minesweeper");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -47,7 +49,9 @@ public class MinesweeperFrame extends JFrame {
                 cells[r][c].addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        if (game.isGameOver()) return;
+                        if (game.isGameOver()) {
+                            return;
+                        }
 
                         if (e.getButton() == MouseEvent.BUTTON3 || e.isControlDown()) {
                             game.toggleFlag(row, col);

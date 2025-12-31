@@ -1,3 +1,5 @@
+package bleier.minesweeper;
+
 import java.util.*;
 
 public class Minesweeper {
@@ -40,7 +42,9 @@ public class Minesweeper {
     private void calculateNumbers() {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (board[r][c] == -1) continue;
+                if (board[r][c] == -1) {
+                    continue;
+                }
                 int count = 0;
                 for (int dr = -1; dr <= 1; dr++) {
                     for (int dc = -1; dc <= 1; dc++) {
@@ -130,7 +134,9 @@ public class Minesweeper {
         int count = 0;
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (flagged[r][c]) count++;
+                if (flagged[r][c]) {
+                    count++;
+                }
             }
         }
         return count;
