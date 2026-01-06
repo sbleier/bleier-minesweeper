@@ -16,7 +16,7 @@ public class MinesweeperFrame extends JFrame {
         this.game = game;
         this.cells = new JButton[game.getRows()][game.getCols()];
 
-        setTitle("bleier.minesweeper.Minesweeper");
+        setTitle("Minesweeper");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -90,45 +90,46 @@ public class MinesweeperFrame extends JFrame {
     private void updateBoard() {
         for (int r = 0; r < game.getRows(); r++) {
             for (int c = 0; c < game.getCols(); c++) {
-                cells[r][c].setOpaque(true);
+                JButton cell = cells[r][c];
+                cell.setOpaque(true);
                 int value = game.getBoard()[r][c];
 
                 // If game is over, show all mines
                 if (game.isGameOver() && value == -1) {
-                    if (game.getFlagged()[r][c]) {
-                        cells[r][c].setText("F");
-                        cells[r][c].setForeground(Color.WHITE);
-                        cells[r][c].setBackground(Color.GREEN);
+                    if (game.getFlagged(r, c)) {
+                        cell.setText("F");
+                        cell.setForeground(Color.WHITE);
+                        cell.setBackground(Color.GREEN);
                     } else {
-                        cells[r][c].setText("*");
-                        cells[r][c].setForeground(Color.BLACK);
-                        cells[r][c].setBackground(Color.RED);
+                        cell.setText("*");
+                        cell.setForeground(Color.BLACK);
+                        cell.setBackground(Color.RED);
                     }
-                } else if (game.isGameOver() && game.getFlagged()[r][c] && value != -1) {
+                } else if (game.isGameOver() && game.getFlagged(r, c) && value != -1) {
                     // Wrong flag - flagged but not a mine
-                    cells[r][c].setText("X");
-                    cells[r][c].setForeground(Color.WHITE);
-                    cells[r][c].setBackground(Color.ORANGE);
-                } else if (game.getFlagged()[r][c]) {
-                    cells[r][c].setText("F");
-                    cells[r][c].setForeground(Color.RED);
-                    cells[r][c].setBackground(new Color(160, 160, 160));
-                } else if (game.getRevealed()[r][c]) {
+                    cell.setText("X");
+                    cell.setForeground(Color.WHITE);
+                    cell.setBackground(Color.ORANGE);
+                } else if (game.getFlagged(r, c)) {
+                    cell.setText("F");
+                    cell.setForeground(Color.RED);
+                    cell.setBackground(new Color(160, 160, 160));
+                } else if (game.getRevealed(r, c)) {
                     if (value == -1) {
-                        cells[r][c].setText("*");
-                        cells[r][c].setForeground(Color.BLACK);
-                        cells[r][c].setBackground(Color.RED);
+                        cell.setText("*");
+                        cell.setForeground(Color.BLACK);
+                        cell.setBackground(Color.RED);
                     } else if (value > 0) {
-                        cells[r][c].setText(String.valueOf(value));
-                        cells[r][c].setForeground(getNumberColor(value));
-                        cells[r][c].setBackground(new Color(210, 210, 210));
+                        cell.setText(String.valueOf(value));
+                        cell.setForeground(getNumberColor(value));
+                        cell.setBackground(new Color(210, 210, 210));
                     } else {
-                        cells[r][c].setText("");
-                        cells[r][c].setBackground(new Color(210, 210, 210));
+                        cell.setText("");
+                        cell.setBackground(new Color(210, 210, 210));
                     }
                 } else {
-                    cells[r][c].setText("");
-                    cells[r][c].setBackground(new Color(160, 160, 160));
+                    cell.setText("");
+                    cell.setBackground(new Color(160, 160, 160));
                 }
             }
         }

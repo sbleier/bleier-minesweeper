@@ -12,6 +12,7 @@ public class Minesweeper {
     private boolean gameOver;
     private boolean gameWon;
     private boolean firstClick;
+    private static final Random RAND = new Random();
 
     public Minesweeper(int rows, int cols, int numMines) {
         this.rows = rows;
@@ -26,11 +27,11 @@ public class Minesweeper {
     }
 
     public void placeMines(int excludeRow, int excludeCol) {
-        Random rand = new Random();
         int placed = 0;
         while (placed < numMines) {
-            int r = rand.nextInt(rows);
-            int c = rand.nextInt(cols);
+            int r = RAND.nextInt(rows);
+            int c = RAND.nextInt(cols);
+            //-1 represents a mine
             if (board[r][c] != -1 && !(r == excludeRow && c == excludeCol)) {
                 board[r][c] = -1;
                 placed++;
@@ -146,12 +147,12 @@ public class Minesweeper {
         return board;
     }
 
-    public boolean[][] getRevealed() {
-        return revealed;
+    public boolean getRevealed(int row, int col) {
+        return revealed[row][col];
     }
 
-    public boolean[][] getFlagged() {
-        return flagged;
+    public boolean getFlagged(int row, int col) {
+        return flagged[row][col];
     }
 
     public boolean isGameOver() {
