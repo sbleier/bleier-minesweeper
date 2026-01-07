@@ -9,6 +9,8 @@ public class MinesweeperFrame extends JFrame {
     private JButton[][] cells;
     private JLabel flagLabel;
     private JLabel timeLabel;
+    private JButton autoFlag;
+    private JButton autoReveal;
     private Timer timer;
     private int timeElapsed;
 
@@ -25,9 +27,14 @@ public class MinesweeperFrame extends JFrame {
         JButton newGameButton = new JButton("New Game");
         timeLabel = new JLabel("Time: 000");
 
+        autoFlag = new JButton(" Auto-Flag");
+        autoReveal = new JButton(" Auto-Reveal");
+
         topPanel.add(flagLabel);
         topPanel.add(newGameButton);
         topPanel.add(timeLabel);
+        topPanel.add(autoFlag);
+        topPanel.add(autoReveal);
         add(topPanel, BorderLayout.NORTH);
 
         JPanel boardPanel = new JPanel();
@@ -72,6 +79,17 @@ public class MinesweeperFrame extends JFrame {
         newGameButton.addActionListener(e -> {
             dispose();
             new MinesweeperFrame(new Minesweeper(9, 9, 10)).setVisible(true);
+        });
+
+
+        autoFlag.addActionListener(e -> {
+            game.autoFlag();
+            updateBoard();
+        });
+
+        autoReveal.addActionListener(e -> {
+            game.autoReveal();
+            updateBoard();
         });
 
         timeElapsed = 0;

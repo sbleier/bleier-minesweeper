@@ -143,6 +143,126 @@ public class Minesweeper {
         return count;
     }
 
+    public void autoFlag() {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (this.getBoard()[r][c] > 0 && this.getRevealed(r, c) && !this.getFlagged(r, c)) {
+                    // count hidden neighbors
+                    //count flagged neighbors
+                    int hiddenCount = 0;
+                    int flaggedCount = 0;
+                    for (int dr = -1; dr <= 1; dr++) {
+                        for (int dc = -1; dc <= 1; dc++) {
+                            int nr = r + dr;
+                            int nc = c + dc;
+                            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                                if (!this.getRevealed(nr, nc) && !this.getFlagged(nr, nc)) {
+                                    hiddenCount++;
+                                }
+                                if (this.getFlagged(nr, nc)) {
+                                    flaggedCount++;
+                                }
+                            }
+                        }
+                    }
+                    if (hiddenCount + flaggedCount == this.getBoard()[r][c]) {
+                        // flag all hidden neighbors
+                        for (int dr = -1; dr <= 1; dr++) {
+                            for (int dc = -1; dc <= 1; dc++) {
+                                int nr = r + dr;
+                                int nc = c + dc;
+                                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                                    if (!this.getRevealed(nr, nc) && !this.getFlagged(nr, nc)) {
+                                        this.toggleFlag(nr, nc);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void autoReveal() {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (this.getBoard()[r][c] > 0 && this.getRevealed(r, c) && !this.getFlagged(r, c)) {
+                    // count flagged neighbors
+                    int flaggedCount = 0;
+                    for (int dr = -1; dr <= 1; dr++) {
+                        for (int dc = -1; dc <= 1; dc++) {
+                            int nr = r + dr;
+                            int nc = c + dc;
+                            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                                if (this.getFlagged(nr, nc)) {
+                                    flaggedCount++;
+                                }
+                            }
+                        }
+                    }
+                    if (flaggedCount == this.getBoard()[r][c]) {
+                        // reveal all hidden neighbors
+                        for (int dr = -1; dr <= 1; dr++) {
+                            for (int dc = -1; dc <= 1; dc++) {
+                                int nr = r + dr;
+                                int nc = c + dc;
+                                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                                    if (!this.getRevealed(nr, nc) && !this.getFlagged(nr, nc)) {
+                                        this.reveal(nr, nc);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public double[] toInput() {
+        double[] input = new double[rows * cols];
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (flagged[r][c]) {
+                    input[r * cols + c] = 1.0;
+                } else if (revealed[r][c]) {
+                    input[r * cols + c] = 0.1 + 0.1 * board[r][c];
+                } else {
+                    input[r * cols + c] = 0;
+                }
+            }
+        }
+        return input;
+    }
+
+    public double[] toOutput() {
+        double[] output = new double[rows * cols];
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (board[r][c] == -1) {
+                    output[r * cols + c] = 1.0;
+                } else {
+                    output[r * cols + c] = 0.0;
+                }
+            }
+        }
+        return output;
+    }
+
+    public Minesweeper deepCopy() {
+        Minesweeper copy = new Minesweeper(rows, cols, numMines);
+        for (int r = 0; r < rows; r++) {
+            System.arraycopy(this.board[r], 0, copy.board[r], 0, cols);
+            System.arraycopy(this.revealed[r], 0, copy.revealed[r], 0, cols);
+            System.arraycopy(this.flagged[r], 0, copy.flagged[r], 0, cols);
+        }
+        copy.gameOver = this.gameOver;
+        copy.gameWon = this.gameWon;
+        copy.firstClick = this.firstClick;
+        return copy;
+    }
+
     public int[][] getBoard() {
         return board;
     }
