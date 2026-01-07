@@ -22,14 +22,14 @@ public class MinesweeperFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        JPanel topPanel = new JPanel();
+
         flagLabel = new JLabel("Flags: " + game.getNumMines());
+        autoFlag = new JButton(" Auto-Flag");
+        autoReveal = new JButton(" Auto-Reveal");
         JButton newGameButton = new JButton("New Game");
         timeLabel = new JLabel("Time: 000");
 
-        autoFlag = new JButton(" Auto-Flag");
-        autoReveal = new JButton(" Auto-Reveal");
-
+        JPanel topPanel = new JPanel();
         topPanel.add(flagLabel);
         topPanel.add(newGameButton);
         topPanel.add(timeLabel);
