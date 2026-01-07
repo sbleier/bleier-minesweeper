@@ -13,6 +13,7 @@ public class Minesweeper {
     private boolean gameWon;
     private boolean firstClick;
     private static final Random RAND = new Random();
+    private static final int MINE = -1;
 
     public Minesweeper(int rows, int cols, int numMines) {
         this.rows = rows;
@@ -32,8 +33,8 @@ public class Minesweeper {
             int r = RAND.nextInt(rows);
             int c = RAND.nextInt(cols);
             //-1 represents a mine
-            if (board[r][c] != -1 && !(r == excludeRow && c == excludeCol)) {
-                board[r][c] = -1;
+            if (board[r][c] != MINE && !(r == excludeRow && c == excludeCol)) {
+                board[r][c] = MINE;
                 placed++;
             }
         }
@@ -43,7 +44,7 @@ public class Minesweeper {
     private void calculateNumbers() {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (board[r][c] == -1) {
+                if (board[r][c] == MINE) {
                     continue;
                 }
                 int count = 0;
@@ -51,7 +52,7 @@ public class Minesweeper {
                     for (int dc = -1; dc <= 1; dc++) {
                         int nr = r + dr;
                         int nc = c + dc;
-                        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr][nc] == -1) {
+                        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr][nc] == MINE) {
                             count++;
                         }
                     }
@@ -112,7 +113,7 @@ public class Minesweeper {
     private void revealAllMines() {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (board[r][c] == -1) {
+                if (board[r][c] == MINE) {
                     revealed[r][c] = true;
                 }
             }
@@ -122,7 +123,7 @@ public class Minesweeper {
     private void checkWin() {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (board[r][c] != -1 && !revealed[r][c]) {
+                if (board[r][c] != MINE && !revealed[r][c]) {
                     return;
                 }
             }
