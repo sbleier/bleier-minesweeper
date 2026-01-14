@@ -294,4 +294,8 @@ public class Minesweeper {
     public int getNumMines() {
         return numMines;
     }
+
+    public boolean[][] getFlaggedArray() {
+        return flagged;
+    }
 }
