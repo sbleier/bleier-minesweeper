@@ -18,19 +18,22 @@ public class Test {
 
         NeuralNetwork nn = null;
         try {
-            nn = NeuralNetwork.readFromFile("minesweeper_nn.txt");
+            nn = NeuralNetwork.readFromFile("minesweeper_nn.json");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         int winCount = 0;
+        int totalMoves = 0;
 
         for (int i = 0; i < 1000; i++) {
+            int moves = 0;
 
             Minesweeper minesweeper = new Minesweeper(ROWS, COLS, MINES);
             minesweeper.reveal(RANDOM.nextInt(ROWS), RANDOM.nextInt(COLS));
 
             while (!minesweeper.isGameOver() && !minesweeper.isGameWon()) {
+                moves++;
                 double[] input = minesweeper.toInput();
                 double[] output = nn.guess(input);
                 boolean flagAdded = false;
@@ -39,8 +42,9 @@ public class Test {
                     if (output[j] >= .9) {
                         int r = j / COLS;
                         int c = j % COLS;
-                        minesweeper.toggleFlag(r, c);
-                        flagAdded = true;
+                        if (minesweeper.flag(r, c)) {
+                            flagAdded = true;
+                        }
                     }
                 }
                 if (flagAdded) {
@@ -55,16 +59,21 @@ public class Test {
                             }
                         }
                     }
-                    if (!candidates.isEmpty()) {
-                        int[] cell = candidates.get(RANDOM.nextInt(candidates.size()));
-                        minesweeper.reveal(cell[0], cell[1]);
+                    if (candidates.isEmpty()) {
+                        // No possible moves left → game is effectively over
+                        break; // or count as loss
                     }
+
+                    int[] cell = candidates.get(RANDOM.nextInt(candidates.size()));
+                    minesweeper.reveal(cell[0], cell[1]);
                 }
             }
             if (minesweeper.isGameWon()) {
                 winCount++;
             }
+            totalMoves += moves;
         }
+        System.out.println("Average moves per game: " + ((double) totalMoves / 1000.0) );
 
         System.out.println("Win rate: " + ((double) winCount / 1000.0) * 100.0 + "%");
 

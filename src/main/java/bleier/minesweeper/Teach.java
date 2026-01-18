@@ -41,7 +41,7 @@ public class Teach {
         }
 
         try {
-            nn.writeToFile("minesweeper_nn.txt");
+            nn.writeToFile("minesweeper_nn.json");
         } catch (IOException e) {
             e.printStackTrace();
         }

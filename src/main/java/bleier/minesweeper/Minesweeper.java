@@ -263,6 +263,14 @@ public class Minesweeper {
         return copy;
     }
 
+    public boolean flag(int row, int col) {
+        if (gameOver || revealed[row][col] || flagged[row][col]) {
+            return false;
+        }
+        flagged[row][col] = true;
+        return true;
+    }
+
     public int[][] getBoard() {
         return board;
     }
