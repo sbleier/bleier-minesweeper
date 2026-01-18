@@ -60,8 +60,8 @@ public class Test {
                         }
                     }
                     if (candidates.isEmpty()) {
-                        // No possible moves left → game is effectively over
-                        break; // or count as loss
+                        // no possible moves left so game is effectively over
+                        break;
                     }
 
                     int[] cell = candidates.get(RANDOM.nextInt(candidates.size()));
@@ -73,7 +73,7 @@ public class Test {
             }
             totalMoves += moves;
         }
-        System.out.println("Average moves per game: " + ((double) totalMoves / 1000.0) );
+        System.out.println("Average moves per game: " + ((double) totalMoves / 1000.0));
 
         System.out.println("Win rate: " + ((double) winCount / 1000.0) * 100.0 + "%");
 
